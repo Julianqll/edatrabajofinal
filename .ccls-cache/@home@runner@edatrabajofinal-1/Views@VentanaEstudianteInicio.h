@@ -47,12 +47,12 @@ public:
 
     cout << "\033[2J\033[0;0H"; // Clear screen
     cout << "=============================" << endl;
-    cout << "        Portada estudiante    " << endl;
+    cout << "    Bienvenido estudiante    " << endl;
     cout << "=============================" << endl;
-    cout << "Nombre: " << alumno.getNombre() << endl;
-    cout << "Aula: " << alumno.getAula() << endl;
-    cout << "Grado: " << alumno.getGrado() << endl;
-    cout << "DNI: " << alumno.getDni() << endl << endl << endl;
+    cout << "  Nombre: " << alumno.getNombre() << endl;
+    cout << "  Aula: " << alumno.getAula() << endl;
+    cout << "  Grado: " << alumno.getGrado() << endl;
+    cout << "  DNI: " << alumno.getDni() << endl << endl << endl;
     cout << "        Cursos    " << endl;
     cout << "======================" << endl;
     cout << "Seleccionar Curso: " << endl;
@@ -61,12 +61,10 @@ public:
     cout << "Ingrese su opción: ";
     cin >> opcion;
     cout << "\033[2J\033[0;0H";
-    // Procesar la opción seleccionada
-    // switch (opcion) {
-    //}
+    // buscar y asignar el nombnre del curso de acuerdo a la posición
+    Curso cursoBuscado = listaCursos.searchByPosition(listaCursos.head, opcion);
     VentanaCurso ventanaCurso;
-    Curso curso;
-    ventanaCurso.inicio(curso);
+    ventanaCurso.inicio(cursoBuscado.getNombre(), "alumno");
 
     // guardar la opcion como un indexido de la lista
   }

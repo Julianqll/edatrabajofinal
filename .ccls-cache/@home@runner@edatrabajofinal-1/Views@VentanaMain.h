@@ -3,6 +3,7 @@
 #include "../models/Tutor.h";
 #include "VentanaEstudianteInicio.h"
 #include "VentanaTutorInicio.h"
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -50,6 +51,42 @@ public:
     return T("error"); // Devuelve un objeto Alumno vacío si el inicio de
                        // sesión falló
   }
+  ////////////////////////// VALIDACIONES ///////////////////////////
+  // Función para validar y obtener el grado correcto
+  string validarGrado() {
+    string grado;
+    cout << "Ingrese el grado [Ejemplo: Primer]: ";
+    cin >> grado;
+
+    // Convertir el grado a mayúsculas
+    transform(grado.begin(), grado.end(), grado.begin(), ::toupper);
+
+    // Validar y obtener el grado correcto
+    if (grado == "PRIMER" || grado == "SEGUNDO" || grado == "TERCERO" ||
+        grado == "CUARTO" || grado == "QUINTO" || grado == "SEXTO") {
+      return grado;
+    } else {
+      std::cout
+          << "\n=> Grado inválido. Por favor, ingrese uno de los siguientes: "
+             "=> Primer, Segundo, Tercero, Cuarto, Quinto, Sexto.\n"
+          << std::endl;
+      // Llamar recursivamente a la función para obtener un grado válido
+      return validarGrado();
+    }
+  }
+
+  // Validar DNI, que tenga 8 digitos y todos sean numeros enteros
+  bool validarDNI(const std::string &dni) {
+    if (dni.length() != 8)
+      return false;
+
+    for (char c : dni) {
+      if (!isdigit(c))
+        return false;
+    }
+
+    return true;
+  }
 
   Alumno iniciarSesionAlumno() {
     std::string nombreUsuario;
@@ -85,6 +122,7 @@ public:
     std::string dni;
     std::string eleccion;
     std::string path;
+    bool dniValido = false;
 
     std::cout << "Ingrese un nombre de usuario: ";
     std::cin >> nombreUsuario;
@@ -94,14 +132,25 @@ public:
 
     std::cout << "Ingrese el aula: ";
     std::cin >> aula;
-    
-    std::cout << "Ingrese el grado: ";
-    cin.ignore();
-    std::cin >> grado;
-    
-    std::cout << "Ingrese el dni: ";
-    std::cin >> dni;
 
+    // Validar el grado correcto
+    grado = validarGrado();
+
+    // Validar el ingreso del DNI
+    do {
+      std::cout << "Ingrese el DNI: ";
+      std::cin >> dni;
+
+      if (!validarDNI(dni)) {
+        std::cout
+            << "\n=> DNI inválido. El DNI debe contener 8 dígitos enteros."
+            << std::endl;
+      } else {
+        dniValido = true;
+      }
+    } while (!dniValido);
+
+    cout << "Importante!!!";
     std::cout << "Ingrese 1 si es Alumno o 2 si es Tutor: ";
     std::cin >> eleccion;
 
@@ -127,64 +176,84 @@ public:
   }
 
   void iniciar() {
-    cout << "\033[2J\033[0;0H";
-
-    cout << "=============================" << endl;
-    cout << "           AGENDA            " << endl;
-    cout << "=============================" << endl;
-    // Mostrar las opciones
-    cout << "1. Estudiante" << endl;
-    cout << "2. Tutor" << endl;
-    cout << "3. Registrarse" << endl;
-    cout << "4. Salir" << endl;
-
-    // Obtener la opción seleccionada
     int opcion;
-    cout << "Ingrese su opción: ";
-    cin >> opcion;
-    cout << "\033[2J\033[0;0H";
-    // Procesar la opción seleccionada
-    switch (opcion) {
-    case 1: {
-      cout << "Has seleccionado 'Iniciar sesión Alumno'." << endl;
-      int contador = 0;
+    int contador = 0;
 
-      Alumno alumno = iniciarSesionAlumno();
-      if (alumno.getError() == "error") {
-        std::cout << "Inicio de sesión fallido. Verifique sus credenciales."
-                  << std::endl;
+    do {
+      cout << "\033[2J\033[0;0H";
+      cout << "=============================" << endl;
+      cout << "      AGENDA ESTUDIANTIL      " << endl;
+      cout << "=============================" << endl;
+      // Mostrar las opciones
+      cout << "1. Login - Alumno" << endl;
+      cout << "2. Login - Tutor" << endl;
+      cout << "3. Registrar nueva cuenta" << endl;
+      cout << "4. Salir" << endl;
+      cout << "=============================" << endl;
+      // Obtener la opción seleccionada
+      cout << "Ingrese su opción: ";
+      cin >> opcion;
+      cin.ignore(); // Limpiar el búfer de entrada
 
+      cout << "\033[2J\033[0;0H";
+
+      // Procesar la opción seleccionada
+      switch (opcion) {
+      case 1: {
+        cout << "Has seleccionado 'Iniciar sesión Alumno'." << endl;
+
+        Alumno alumno = iniciarSesionAlumno();
+        if (alumno.getError() == "error") {
+          std::cout << "Inicio de sesión fallido. Verifique sus credenciales."
+                    << std::endl;
+          contador++;
+          cout << "Intentos: " << contador << endl;
+        } else {
+          contador =
+              0; // Reiniciar el contador si el inicio de sesión fue exitoso
+          VentanaEstudianteInicio ventanaEstudiante;
+          ventanaEstudiante.setAlumno(alumno);
+          ventanaEstudiante.Inicio(alumno);
+        }
+      } break;
+      case 2: {
+        cout << "Has seleccionado 'Iniciar sesión Tutor'." << endl;
+
+        Tutor tutor = iniciarSesionTutor();
+        if (tutor.getError() == "error") {
+          std::cout << "Inicio de sesión fallido. Verifique sus credenciales."
+                    << std::endl;
+          contador++;
+          cout << "Intentos: " << contador << endl;
+        } else {
+          contador =
+              0; // Reiniciar el contador si el inicio de sesión fue exitoso
+          VentanaTutorInicio ventanaTutor;
+          ventanaTutor.setTutor(tutor);
+          ventanaTutor.Inicio(tutor);
+        }
+      } break;
+      case 3: {
+        cout << "Has seleccionado 'Registrarse'." << endl;
+        registrarUsuario();
+      } break;
+      case 4:
+        cout << "Gracias por utilizar nuestro sistema. ¡Hasta luego!" << endl;
+        break;
+      default:
+        cout << "=> Opción inválida. Por favor, selecciona una opción válida."
+             << endl;
         contador++;
-        cout << "Intentos :" << contador << endl;
+        cout << "=> Intentos: " << contador << endl;
+        break;
       }
 
-      VentanaEstudianteInicio ventanaEstudiante;
-      ventanaEstudiante.setAlumno(alumno);
-      ventanaEstudiante.Inicio(alumno);
-    } break;
-    case 2: {
-      cout << "Has seleccionado 'Iniciar sesión Tutor'." << endl;
-
-      Tutor tutor = iniciarSesionTutor();
-      if (tutor.getError() == "error") {
-        std::cout << "Inicio de sesión fallido. Verifique sus credenciales."
-                  << std::endl;
-        VentanaTutorInicio ventanaTutor;
-        ventanaTutor.setTutor(tutor);
-        ventanaTutor.Inicio(tutor);
+      if (contador >= 3) {
+        cout << "=> Has excedido el número máximo de intentos. Saliendo del "
+                "programa."
+             << endl;
+        break;
       }
-    } break;
-    case 3: {
-      cout << "Has seleccionado 'Registrarse'." << endl;
-      registrarUsuario();
-    } break;
-    case 4:
-      cout << "Gracias por utilizar nuestro sistema. ¡Hasta luego!" << endl;
-      break;
-    default:
-      cout << "Opción inválida. Por favor, selecciona una opción válida."
-           << endl;
-      break;
-    }
+    } while (opcion < 1 || opcion > 4);
   }
 };

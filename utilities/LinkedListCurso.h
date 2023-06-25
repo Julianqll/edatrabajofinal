@@ -1,5 +1,6 @@
 #pragma once
 #include "../models/Curso.h"
+#include <algorithm>
 #include <iostream>
 
 using namespace std;
@@ -19,10 +20,21 @@ public:
     head = nullptr; // Inicializar el puntero a nulo al crear la lista
   }
 
-  void printList(Node *n) {
+  /*void printList(Node *n) {
     int counter = 1; // Variable de contador
     while (n != nullptr) {
       cout << counter << ". " << n->Value.getNombre() << endl;
+      n = n->Next;
+      counter++;
+    }
+  }*/
+  void printList(Node *n) {
+    int counter = 1; // Variable de contador
+    while (n != nullptr) {
+      string nombre = n->Value.getNombre();
+      // Reemplazar los guiones ("-") por espacios (" ")
+      replace(nombre.begin(), nombre.end(), '-', ' ');
+      cout << counter << ". " << nombre << endl;
       n = n->Next;
       counter++;
     }
@@ -69,5 +81,24 @@ public:
     // 3.Insert newNode after previous
     newNode->Next = previous->Next;
     previous->Next = newNode;
+  }
+
+  Curso searchByPosition(Node *head, int position) {
+    // Variable para contar la posición actual
+    int counter = 1;
+
+    // Recorrer la lista hasta encontrar la posición deseada o llegar al final
+    while (head != nullptr && counter < position) {
+      head = head->Next;
+      counter++;
+    }
+
+    // Verificar si se encontró el nodo en la posición deseada
+    if (head != nullptr && counter == position) {
+      return head->Value;
+    } else {
+      Curso curso;
+      return curso; // No se encontró el nodo en la posición deseada
+    }
   }
 };

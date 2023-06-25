@@ -1,3 +1,5 @@
-tarea1 Esta-es-la-descripcion1 27/06/2023 EDA
-tarea2 Esta-es-la-descripcion2 28/06/2023 EDA
-tarea3 Esta-es-la-descripcion3 29/06/2023 EDA
+tarea1 Esta-es-la-descripcion1 27/06/2023 EDA Pendiente
+tarea2 Esta-es-la-descripcion2 28/06/2023 EDA Pendiente
+tarea3 Esta-es-la-descripcion3 29/06/2023 EDA Hecho
+tarea1 Esta-es-la-descripcion3 29/06/2023 Gestion-de-empresas Hecho
+tarea2 Esta-es-la-descripcion3 29/06/2023 Gestion-de-empresas Hecho

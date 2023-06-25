@@ -1,2 +1,2 @@
-EDA [tutor1, tutor2, tutor3] [Kike]
-Gestion-de-empresas [tutor4] [Kike]
+EDA [Tutor1,Tutor2,Tutor3] [Kike,Jose]
+Gestion-de-empresas [Tutor4] [Kike]

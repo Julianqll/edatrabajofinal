@@ -7,6 +7,7 @@ private:
   string Descripcion;
   string fecha;
   string curso;
+  string estado;
 
 public:
   Tarea() {}
@@ -31,4 +32,9 @@ public:
 
   // Setter para el mes
   void setCurso(const string &nuevoCurso) { curso = nuevoCurso; }
+
+  string getEstado() { return estado; }
+
+  // Setter para el estado
+  void setEstado (const string &nuevoEstado) {estado = nuevoEstado;}
 };

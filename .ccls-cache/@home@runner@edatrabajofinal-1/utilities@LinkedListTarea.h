@@ -19,10 +19,19 @@ public:
     head = nullptr; // Inicializar el puntero a nulo al crear la lista
   }
 
-  void printList(Node *n) {
+  void printList(Node *n, string curso) {
     int counter = 1; // Variable de contador
     while (n != nullptr) {
-      cout << counter << ". " << n->Value.getNombre() << endl;
+      if (n->Value.getCurso() == curso) {
+        if (n->Value.getEstado() == "Hecho") {
+          cout << counter << ". " << n->Value.getNombre() << " \u2713 (Hecho)"
+               << endl;
+
+        } else {
+          cout << counter << ". " << n->Value.getNombre() << " (Pendiente)"
+               << endl;
+        }
+      }
       n = n->Next;
       counter++;
     }
@@ -69,5 +78,24 @@ public:
     // 3.Insert newNode after previous
     newNode->Next = previous->Next;
     previous->Next = newNode;
+  }
+
+  Tarea searchByPosition(Node *head, int position) {
+    // Variable para contar la posición actual
+    int counter = 1;
+
+    // Recorrer la lista hasta encontrar la posición deseada o llegar al final
+    while (head != nullptr && counter < position) {
+      head = head->Next;
+      counter++;
+    }
+
+    // Verificar si se encontró el nodo en la posición deseada
+    if (head != nullptr && counter == position) {
+      return head->Value;
+    } else {
+      Tarea tarea;
+      return tarea; // No se encontró el nodo en la posición deseada
+    }
   }
 };
