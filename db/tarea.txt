@@ -1,0 +1,3 @@
+tarea1 Esta-es-la-descripcion1 27/06/2023 EDA
+tarea2 Esta-es-la-descripcion2 28/06/2023 EDA
+tarea3 Esta-es-la-descripcion3 29/06/2023 EDA
