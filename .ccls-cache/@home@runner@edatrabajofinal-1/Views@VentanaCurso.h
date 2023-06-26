@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <limits>
 using namespace std;
 
 std::vector<std::string> stringToList(const std::string &input) {
@@ -193,47 +194,99 @@ public:
       std::cout << "No se pudo abrir el archivo." << std::endl;
     }
 
-    cout << "  Curso seleccionado: " << curso.getNombre() << "      " << endl;
-    cout << "================================" << endl << endl;
+    cout << "=> Curso seleccionado: " << curso.getNombre() << "      " << endl;
+    cout << "\n=========================" << endl;
 
     if (tipoUsuario == "alumno") {
       // Imprimir cada elemento en forma de lista
 
-      cout << "     Profesores    " << endl;
+      cout << "       Profesores    " << endl;
       cout << "=========================" << endl;
       int counter = 1;
       for (auto &item : curso.getTutores()) {
-        cout << counter << ". " << item.getNombre() << endl;
+        cout << "  " << counter << ". " << item.getNombre() << endl;
         counter++;
       }
-
-      cout << endl << endl;
-      cout << "     Tareas    " << endl;
+      cout << "\n=========================" << endl;
+      cout << "        Tareas    " << endl;
       cout << "=========================" << endl;
-      listaTareas.printList(listaTareas.head, curso.getNombre());
+      listaTareas.printList(listaTareas.head, curso.getNombre(), "alumno");
+      cout << "=========================" << endl;
       int opcion;
-      cout << "Ingrese su la tarea que desea ver: ";
+      cout << "\nIngrese el # de la tarea que desea ver: ";
       cin >> opcion;
       cout << "\033[2J\033[0;0H";
       // buscar y asignar el nombnre de la tarea de acuerdo a la posición
       Tarea tareaBuscada =
           listaTareas.searchByPosition(listaTareas.head, opcion);
       VentanaTarea ventanaTarea;
-      ventanaTarea.inicio(tareaBuscada.getNombre());
-      
+      ventanaTarea.inicio(tareaBuscada.getNombre(), "alumno");
     } else {
-
-      cout << "     Alumnos    " << endl;
+      cout << "=========================" << endl;
+      cout << "         Alumnos    " << endl;
       cout << "=========================" << endl;
       int counter = 1;
       for (auto &item : curso.getAlumnosMatriculados()) {
-        cout << counter << ". " << item.getNombre() << endl;
+        cout << "  " << counter << ". " << item.getNombre() << endl;
         counter++;
       }
       cout << endl;
-      // Imprimir cada elemento en forma de lista
-      cout << "1. Generar reportes: " << endl;
-      cout << "2. Generar notas: " << endl;
+      cout << "\n=========================" << endl;
+      cout << "        Tareas    " << endl;
+      cout << "=========================" << endl;
+      listaTareas.printList(listaTareas.head, curso.getNombre(), "tutor");
+      cout << "=========================" << endl;
+      cout << endl;
+      cout << " 1. Agregar tarea" << endl;
+      cout << " 2. Cerrar programa" << endl;
+      int opcion;
+      cout << "\nSeleccionar opcion: ";
+      cin >> opcion;
+      switch (opcion) {
+      case 1: {
+        std::string nombre, descripcion, fecha;
+      std::cout << "Ingresar nombre de tarea: ";
+      std::cin >> nombre;
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Descartar el carácter de nueva línea
+  
+      std::cout << "Ingresar descripción: ";
+      std::getline(std::cin, descripcion);
+  
+      std::cout << "Ingresar fecha (dd/mm/YYYY): ";
+      std::cin >> fecha;
+        // Abrir el archivo en modo de escritura
+        std::ofstream archivo(
+            "db/tarea.txt", std::ios::app); // El modo de apertura "app" agrega
+                                            // nuevos datos al final del archivo
+
+        if (!archivo) {
+          std::cout << "Error al abrir el archivo." << std::endl;
+        }
+
+        // Escribir los nuevos datos en una nueva línea en el archivo
+        archivo << nombre << " " << reemplazarEspaciosConGuiones(descripcion)
+                << " " << fecha << " " << curso.getNombre() << " "
+                << "Pendiente" << std::endl;
+
+        // Cerrar el archivo
+        archivo.close();
+
+        std::cout
+            << "Los nuevos datos se han agregado al archivo correctamente."
+            << std::endl;
+
+        cout << "\033[2J\033[0;0H";
+
+        VentanaCurso ventanaCurso;
+        ventanaCurso.inicio(curso.getNombre(), tipoUsuario);
+
+      } break;
+      case 2: {
+        break;
+      } break;
+      default:
+        break;
+      }
     }
   }
 };

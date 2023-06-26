@@ -19,17 +19,22 @@ public:
     head = nullptr; // Inicializar el puntero a nulo al crear la lista
   }
 
-  void printList(Node *n, string curso) {
+  void printList(Node *n, string curso, string usuario) {
     int counter = 1; // Variable de contador
     while (n != nullptr) {
       if (n->Value.getCurso() == curso) {
-        if (n->Value.getEstado() == "Hecho") {
-          cout << counter << ". " << n->Value.getNombre() << " \u2713 (Hecho)"
-               << endl;
+        if (usuario == "alumno") {
+          if (n->Value.getEstado() == "Hecho") {
+            cout << counter << ". " << n->Value.getNombre() << " \u2713 (Hecho)"
+                 << endl;
 
+          } else {
+            cout << counter << ". " << n->Value.getNombre() << " (Pendiente)"
+                 << endl;
+          }
         } else {
-          cout << counter << ". " << n->Value.getNombre() << " (Pendiente)"
-               << endl;
+          cout << counter << ". " << n->Value.getNombre()
+               << " - Deadline: " << n->Value.getFecha() << endl;
         }
       }
       n = n->Next;

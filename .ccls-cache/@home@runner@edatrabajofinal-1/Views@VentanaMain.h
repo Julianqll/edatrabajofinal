@@ -92,7 +92,7 @@ public:
     std::string nombreUsuario;
     std::string contraseña;
     // cout << "\033[2J\033[0;0H";
-    std::cout << "Ingrese su nombre de usuario: ";
+    std::cout << "\nIngrese su nombre de usuario: ";
     std::cin >> nombreUsuario;
 
     std::cout << "Ingrese su contraseña: ";
@@ -105,7 +105,7 @@ public:
     std::string nombreUsuario;
     std::string contraseña;
     // cout << "\033[2J\033[0;0H";
-    std::cout << "Ingrese su nombre de usuario: ";
+    std::cout << "\nIngrese su nombre de usuario: ";
     std::cin >> nombreUsuario;
 
     std::cout << "Ingrese su contraseña: ";
@@ -185,13 +185,13 @@ public:
       cout << "      AGENDA ESTUDIANTIL      " << endl;
       cout << "=============================" << endl;
       // Mostrar las opciones
-      cout << "1. Login - Alumno" << endl;
-      cout << "2. Login - Tutor" << endl;
-      cout << "3. Registrar nueva cuenta" << endl;
-      cout << "4. Salir" << endl;
+      cout << "  1. Login - Alumno" << endl;
+      cout << "  2. Login - Tutor" << endl;
+      cout << "  3. Registrar nueva cuenta" << endl;
+      cout << "  4. Salir" << endl;
       cout << "=============================" << endl;
       // Obtener la opción seleccionada
-      cout << "Ingrese su opción: ";
+      cout << "\nIngrese su opción: ";
       cin >> opcion;
       cin.ignore(); // Limpiar el búfer de entrada
 
@@ -201,38 +201,84 @@ public:
       switch (opcion) {
       case 1: {
         cout << "Has seleccionado 'Iniciar sesión Alumno'." << endl;
+        Alumno alumno;
+        int intentos = 0;
 
-        Alumno alumno = iniciarSesionAlumno();
-        if (alumno.getError() == "error") {
-          std::cout << "Inicio de sesión fallido. Verifique sus credenciales."
-                    << std::endl;
-          contador++;
-          cout << "Intentos: " << contador << endl;
+        while (intentos < 3) {
+          alumno = iniciarSesionAlumno();
+
+          if (alumno.getError() == "error") {
+            cout << "\n=> Inicio de sesión fallido. Verifique sus credenciales."
+                 << endl;
+            intentos++;
+
+            if (intentos == 2) {
+              cout << "\n¡Último intento!" << endl;
+            }
+
+            cout << "=> Intentos: " << intentos << endl;
+          } else {
+            intentos =
+                0; // Reiniciar el contador si el inicio de sesión fue exitoso
+            break; // Salir del bucle si el inicio de sesión fue exitoso
+          }
+        }
+
+        if (intentos == 3) {
+          cout << "\nHas excedido el número máximo de intentos. Saliendo del "
+                  "programa."
+               << endl;
+          exit(0);
+
         } else {
-          contador =
-              0; // Reiniciar el contador si el inicio de sesión fue exitoso
           VentanaEstudianteInicio ventanaEstudiante;
           ventanaEstudiante.setAlumno(alumno);
           ventanaEstudiante.Inicio(alumno);
         }
-      } break;
+
+        break;
+      }
+
       case 2: {
         cout << "Has seleccionado 'Iniciar sesión Tutor'." << endl;
 
-        Tutor tutor = iniciarSesionTutor();
-        if (tutor.getError() == "error") {
-          std::cout << "Inicio de sesión fallido. Verifique sus credenciales."
-                    << std::endl;
-          contador++;
-          cout << "Intentos: " << contador << endl;
+        Tutor tutor;
+        int intentos = 0;
+
+        while (intentos < 3) {
+          tutor = iniciarSesionTutor();
+
+          if (tutor.getError() == "error") {
+            cout << "\n=> Inicio de sesión fallido. Verifique sus credenciales."
+                 << endl;
+            intentos++;
+
+            if (intentos == 2) {
+              cout << "\n¡Último intento!" << endl;
+            }
+
+            cout << "=> Intentos: " << intentos << endl;
+          } else {
+            intentos =
+                0; // Reiniciar el contador si el inicio de sesión fue exitoso
+            break; // Salir del bucle si el inicio de sesión fue exitoso
+          }
+        }
+        if (intentos == 3) {
+          cout << "\nHas excedido el número máximo de intentos. Saliendo del "
+                  "programa."
+               << endl;
+          exit(0);
+
         } else {
-          contador =
-              0; // Reiniciar el contador si el inicio de sesión fue exitoso
           VentanaTutorInicio ventanaTutor;
           ventanaTutor.setTutor(tutor);
           ventanaTutor.Inicio(tutor);
         }
-      } break;
+
+        break;
+      }
+
       case 3: {
         cout << "Has seleccionado 'Registrarse'." << endl;
         registrarUsuario();
@@ -244,7 +290,7 @@ public:
         cout << "=> Opción inválida. Por favor, selecciona una opción válida."
              << endl;
         contador++;
-        cout << "=> Intentos: " << contador << endl;
+        cout << "=> Intento " << contador << endl;
         break;
       }
 

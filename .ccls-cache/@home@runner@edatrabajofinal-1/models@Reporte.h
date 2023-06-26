@@ -6,6 +6,8 @@ private:
   string titulo;
   string descripcion;
   string dia, mes;
+  string alumno;
+  string firma;
 
 public:
   Reporte() {
@@ -16,7 +18,10 @@ public:
     titulo = tituloReporte;
     descripcion = descripcionReporte;
   }
-
+  string getDia() { return dia; }
+  void setDia(const string &dia) { this->dia = dia; }
+  string getMes() { return mes; }
+  void setMes(const string &mes) { this->mes = mes; }
   // Getter para el título del reporte
   string getTitulo() { return titulo; }
 
@@ -30,4 +35,10 @@ public:
   void setDescripcion(const string &nuevaDescripcion) {
     descripcion = nuevaDescripcion;
   }
+
+  void setAlumno(const string alumno) { this->alumno = alumno; }
+  string getAlumno() { return this->alumno; }
+
+  void setFirma(const string firma) { this->firma = firma; }
+  string getFirma() { return this->firma; }
 };

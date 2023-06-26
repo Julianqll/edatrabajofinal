@@ -1,0 +1,4 @@
+Kike EDA 10 2 16 9.33333
+Kike Taller 12 4 15 10.3333
+Jose Economia 15 6 14 11.6667
+Kike Ciencias 12 3 16 10.3333

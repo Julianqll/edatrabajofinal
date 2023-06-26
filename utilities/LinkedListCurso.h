@@ -2,6 +2,7 @@
 #include "../models/Curso.h"
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -28,13 +29,35 @@ public:
       counter++;
     }
   }*/
-  void printList(Node *n) {
+  void printList(Node *n, string tipoInterfaz, string nombreProfesor) {
     int counter = 1; // Variable de contador
     while (n != nullptr) {
       string nombre = n->Value.getNombre();
-      // Reemplazar los guiones ("-") por espacios (" ")
-      replace(nombre.begin(), nombre.end(), '-', ' ');
-      cout << counter << ". " << nombre << endl;
+      if (tipoInterfaz == "alumno") {
+        vector<string> nombresAlumnos;
+        for (auto &item : n->Value.getAlumnosMatriculados()) {
+          nombresAlumnos.push_back(item.getNombre());
+        }
+        auto busqueda = std::find(nombresAlumnos.begin(), nombresAlumnos.end(),
+                                  nombreProfesor);
+        if (busqueda != nombresAlumnos.end()) {
+          // Reemplazar los guiones ("-") por espacios (" ")
+          replace(nombre.begin(), nombre.end(), '-', ' ');
+          cout << counter << ". " << nombre << endl;
+        }
+      } else {
+        vector<string> nombresTutores;
+        for (auto &item : n->Value.getTutores()) {
+          nombresTutores.push_back(item.getNombre());
+        }
+        auto busqueda = std::find(nombresTutores.begin(), nombresTutores.end(),
+                                  nombreProfesor);
+        if (busqueda != nombresTutores.end()) {
+          // Reemplazar los guiones ("-") por espacios (" ")
+          replace(nombre.begin(), nombre.end(), '-', ' ');
+          cout << counter << ". " << nombre << endl;
+        }
+      }
       n = n->Next;
       counter++;
     }
