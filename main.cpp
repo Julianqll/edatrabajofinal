@@ -7,7 +7,6 @@ int main() {
     // Limpiar la pantalla
     VentanaMain ventanamain;
     ventanamain.iniciar();
-
   
   return 0;
 }
